@@ -26,7 +26,7 @@ import time
 ENWS = [[1,0],[0,1],[-1,0],[0,-1]]
 
 #Use this to choose the size of the grid 
-GRID_SIZE = 20
+GRID_SIZE = 10
 
 #Flags for enabling and disabling different methods 
 use_queue = True
@@ -394,9 +394,7 @@ def run(wave_grid):
 # are submitted. Try at least "Knots" and "FloorPlan"
 wave_grid = ones((GRID_SIZE,GRID_SIZE,len(tiles)), dtype=int)
 wave_set = create_wave_set(wave_grid)
-
 run_interactive(wave_grid)
-run(wave_grid)
 
 '''The resulting images made during this process can be seen in Circuit25.png, FloorPlan25.png, Knots20.png, Knots15.png, Rooms15.png'''
 
@@ -414,14 +412,12 @@ idx = int((GRID_SIZE-1)/2)
 #We can either precollapse into a random tile or choose our own. Here we choose our own:
 wave_grid[idx, idx] = pick_specific_tile(wave_grid[idx,idx],19)
 wave_grid[idx+1, idx] = pick_specific_tile(wave_grid[idx+1,idx],18)
-# wave_grid[idx, idx+1] = pick_specific_tile(wave_grid[idx,idx+1],5)
-# wave_grid[idx+1, idx+1] = pick_specific_tile(wave_grid[idx+1,idx+1],5)
 
 wave_set = create_wave_set(wave_grid)
 
 #This variable makes it possible for us to choose the starting point of our propergation in the first round
 chosen_start = [idx+1,idx]
-#run_interactive(wave_grid)
+run_interactive(wave_grid)
 
 '''Now by precollapsing specific cells to choose a tile, we are able to create a starting point which we like.
 # E.g. for the tileset "Circuits" we wanted a component in the middle of the grid and thus we precollapse those cells into the specific tile we wanted. 
@@ -437,13 +433,9 @@ E.g. choosing the dskew tile for the circuts makes it so that there is a clear p
 tiles = load_tiles("FloorPlan")
 wave_grid = ones((GRID_SIZE,GRID_SIZE,len(tiles)), dtype=int)
 wave_set = create_wave_set(wave_grid)
-use_queue = False
 chosen_start = [-1,-1]
-
-#start = time.time()
-#run_interactive(wave_grid)
-#end = time.time()
-#print(end-start)
+use_queue = False
+run_interactive(wave_grid)
 
 '''This has been implemented in the propagate_no_queue function. Setting the flag use_queue to False will enable usage of this function.
 Using this approach we experience that the amount of 0 entropy cell occurences go up, which is probably explained by the fact the we don't propagate the entropy changes to the whole grid.
